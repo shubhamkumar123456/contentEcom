@@ -11,8 +11,11 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
+import 'react-loading-skeleton/dist/skeleton.css'
 const Home = () => {
+  const [loading, setloading] = useState(false);
   let store = useContext(cartContext)
   console.log(store)
   let searchvalue = store.searchText
@@ -20,12 +23,15 @@ const Home = () => {
   let navigate = useNavigate()
   const [arr, setarr] = useState([]);
   console.log(arr)
+
   const getAllData = async () => {
+    setloading(true)
    try {
     let res = await fetch('https://dummyjson.com/products?skip=0&limit=0');
     let data = await res.json();
     // console.log(data) //[]
     setarr(data.products)
+    setloading(false)
    } catch (error) {
       console.log("error in api or internet is not working")
    }
@@ -88,7 +94,23 @@ const Home = () => {
 
 
   return (
-   <div>
+  <>
+     {loading ?<div className='grid grid-cols-12 gap-3 p-3' >
+      {
+        Array(8).fill(0).map((ele)=>{
+          return  <div className='lg:col-span-3 m-auto md:col-span-4 sm:col-span-6 col-span-12 max-w-sm'>
+            <SkeletonTheme baseColor="#202020" highlightColor="#444">
+
+            <Skeleton className='w-[500px]' width={300} height={300}/>
+            </SkeletonTheme>
+          </div>
+     
+   
+        })
+      }
+     </div>
+      :
+    <div>
      <div className='grid grid-cols-12 gap-3 p-3'>
      {
               slicedArr.map((ele,i) => {
@@ -194,14 +216,10 @@ const Home = () => {
   
 </div>
 
-{/* <Stack spacing={5}>
-     
-      <Pagination  page={currentPage} onChange={handlePageChange}   onPageChange={handleChangePage} count={noOfButton} color="primary" />
-   
-    </Stack> */}
 
 
-   </div>
+   </div>}
+  </>
   )
 }
 

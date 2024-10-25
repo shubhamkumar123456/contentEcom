@@ -8,7 +8,7 @@ const Navbar = () => {
       let store = useContext(cartContext)
       let ctx = useContext(UserContext)
     
-   
+    let login = ctx.user.login
     const handleSearchChange = (e)=>{
       // console.log(e.target.value)
       store.setSearchText(e.target.value.toLowerCase())
@@ -50,12 +50,12 @@ const Navbar = () => {
 
           {/* Right Side: User Actions */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/login" className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">
+          {login===false &&  <Link to="/login" className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900">
               Login
-            </Link>
-            <Link to="/register" className="px-3 py-2 bg-blue-600 text-sm font-medium text-white rounded-lg hover:bg-blue-700">
+            </Link>}
+          {login === false &&  <Link to="/register" className="px-3 py-2 bg-blue-600 text-sm font-medium text-white rounded-lg hover:bg-blue-700">
               Sign Up
-            </Link>
+            </Link>}
 
             {/* Dropdown Menu */}
             <div className="relative">
@@ -80,12 +80,12 @@ const Navbar = () => {
                   >
                     Profile
                   </Link>
-                  <button
+                 {login === true && <button
                     onClick={handleLogOut}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Logout
-                  </button>
+                  </button>}
                 </div>
               )}
             </div>
@@ -150,21 +150,16 @@ const Navbar = () => {
           <Link to="/" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
             Home
           </Link>
-          <Link to="/login" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
+         {login===false && <Link to="/login" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">
             Login
-          </Link>
-          <Link to="/register" className="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700">
+          </Link>}
+         {login === false && <Link to="/register" className="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700">
             Sign Up
-          </Link>
-          <button className="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700">
+          </Link>}
+       { login === true &&  <button onClick={handleLogOut} className="block px-3 py-2 rounded-md text-base font-medium text-white bg-blue-600 hover:bg-blue-700">
             Logout
-          </button>
-          <Link
-            to="/logout"
-            className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
-          >
-            Logout
-          </Link>
+          </button>}
+         
         </div>
       )}
     </nav>
